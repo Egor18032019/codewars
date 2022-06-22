@@ -31,6 +31,13 @@ FROM Passenger
 GROUP BY name
 HAVING COUNT(name) >= 2
 
+SELECT good_name
+FROM Goods
+         JOIN Payments
+              ON Payments.good = Goods.good_id
+GROUP by good_name
+HAVING COUNT(*) > 1
+
 SELECT count(*) AS count
 FROM Student_in_class
          INNER JOIN Class
@@ -134,3 +141,72 @@ WHERE member_id = (
                   ON Goods.good_id = Payments.good
     WHERE good_name = 'potato'
 )
+
+SELECT good_name, unit_price
+FROM Goods,
+     Payments
+Where Payments.good = Goods.good_id
+  and type = (
+    SELECT DISTINCT type
+    FROm Goods
+             JOIN GoodTypes
+                  on GoodTypes.good_type_id = Goods.type
+    WHERE good_type_name = 'delicacies'
+)
+ORDER by unit_price DESC
+LIMIT 1
+
+SELECT good_name
+FROM Goods
+WHERE good_id NOT IN
+      (SELECT DISTINCT good
+       FROM Payments
+       WHERE YEAR(date) = 2005)
+
+SELECT good_type_name
+FROM GoodTypes AS NotG
+WHERE NOT EXISTS
+    (SELECT DISTINCT good_type_name
+     FROM Payments,
+          Goods,
+          GoodTypes
+     WHERE good_id = good
+       AND good_type_id = type
+       AND YEAR(date) = 2005
+       AND good_type_name = NotG.good_type_name)
+
+SELECT good_type_name
+FROM GoodTypes AS NotG
+WHERE NOT EXISTS(
+        SELECT DISTINCT good_type_name
+        From GoodTypes
+                 Join Goods
+                      on Goods.type = GoodTypes.good_type_id
+                 JOIN Payments
+                      on Payments.good = Goods.good_id
+        WHERE YEAR(date) = 2005
+          AND good_type_name = NotG.good_type_name
+    )
+
+SELECT DISTINCT good_type_name, SUM(unit_price * amount) as costs
+From GoodTypes
+         Join Goods
+              on Goods.type = GoodTypes.good_type_id
+         JOIN Payments
+              on Payments.good = Goods.good_id
+WHERE YEAR(date) = 2005
+GROUP by good_type_name
+
+SELECT DISTINCT name
+From Passenger
+         JOIN   Pass_in_trip
+                on Pass_in_trip.passenger =Passenger.id
+         JOIN Trip
+              on Trip.id = Pass_in_trip.trip
+Where town_to like 'Moscow'
+  and plane = 'TU-134'
+--     Вывести средний возраст людей (в годах), хранящихся в базе данных. Результат округлите до целого в меньшую сторону.
+SELECT FLOOR(AVG(TIMESTAMPDIFF(YEAR,
+                               birthday,
+                               NOW()))) AS age
+FROM FamilyMembers
