@@ -220,3 +220,68 @@ SELECT TIMEDIFF(
                (SELECT start_pair
                 FROM Timepair
                 WHERE id=2)) AS time
+
+SELECT MAX(TIMESTAMPDIFF(YEAR
+    ,birthday,
+                         NOW())) as max_year
+FROM Student
+         Join Student_in_class
+              on Student_in_class.student =Student.id
+         JOIN Class
+              on Class.id = Student_in_class.class
+Where name like '10 %'
+
+
+SELECT classroom
+FROM Schedule
+GROUP by classroom
+HAVING COUNT(*) =
+--        далее считаем максимальное значение повторенией classroom и уже по этому значению фильтруем
+       (
+                    SELECT MAX(co)
+                      From (
+                           SELECT COUNT(*) as co
+                           From Schedule
+                           GROUP BY classroom
+                         ) as cos
+)
+
+SELECT (
+           SELECT COUNT(*)
+           FROM Student_in_class
+                    JOIN Class ON class = Class.id
+           WHERE Class.name = '10 A'
+       ) / (
+           SELECT COUNT(*)
+           FROM Student_in_class
+       ) * 100 AS percent
+SELECT FLOOR((
+                 SELECT COUNT(*)
+                 FROM Student
+                 WHERE Year(birthday) = 2000
+             ) / (
+                 SELECT COUNT(*)
+                 FROM Student
+             ) * 100) AS percent
+
+    INSERT INTO Goods (
+SELECT COUNT(*) + 1,
+       'Cheese',
+       (
+           SELECT good_type_id
+           FROM GoodTypes
+           WHERE good_type_name = 'food'
+           limit 1
+       )
+FROM Goods
+    )
+
+INSERT INTO Goods(good_id ,good_name ,type )
+VALUES (
+           (SELECT COUNT(*) +1
+            From (Select * From Goods) as sometable),'Cheese',
+           (SELECT DISTINCT good_type_id
+            From GoodTypes
+            WHERE good_type_name ='food'
+           )
+       )
