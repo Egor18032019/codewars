@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 class Permutations {
     public static void main(String[] args) {
-        System.out.println(singlePermutations("aabb").toString());
+        System.out.println(singlePermutations("aaBB").toString());
     }
 
 
@@ -19,32 +19,33 @@ class Permutations {
             return answer;
         }
         if (length == 2) {
-            answer.add(s);
-            answer.add(String.valueOf(new StringBuilder(s).reverse()));
+            String value = String.valueOf(new StringBuilder(s).reverse());
+            if (!s.equals(value)) {
+                answer.add(s);
+                answer.add(value);
+            } else {
+                answer.add(s);
+            }
             return answer;
         }
         List<Character> list = s.chars().mapToObj(e -> (char) e)
                 .collect(Collectors.toList());
         permutate(answer, list, 0);
 
-//        if (!answer.contains(value)) answer.add(value);
-
-
-
         return answer;
-}
+    }
 
     public static void permutate(List<String> answer, List<Character> list, int k) {
         for (int i = k; i < list.size(); i++) {
             Collections.swap(list, i, k);
-            permutate(answer, list, k+1);
-            Collections.swap(list, k ,i);
+            permutate(answer, list, k + 1);
+            Collections.swap(list, k, i);
         }
 
-        if(k == list.size()-1){
+        if (k == list.size() - 1) {
             String value = list.stream().map(String::valueOf).collect(Collectors.joining());
-            if(!answer.contains(value)){
-            answer.add(value);
+            if (!answer.contains(value)) {
+                answer.add(value);
             }
         }
     }
