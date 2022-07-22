@@ -279,9 +279,106 @@ FROM Goods
 INSERT INTO Goods(good_id ,good_name ,type )
 VALUES (
            (SELECT COUNT(*) +1
-            From (Select * From Goods) as sometable),'Cheese',
+            From (Select * From Goods) as sometable),
+            'Cheese',
            (SELECT DISTINCT good_type_id
             From GoodTypes
             WHERE good_type_name ='food'
            )
        )
+INSERT INTO GoodTypes (
+    SELECT COUNT(*) + 1,
+           'auto'
+    FROM GoodTypes
+)
+UPDATE FamilyMembers
+SET member_name = 'Andie Anthony'
+WHERE member_name = 'Andie Quincey'
+
+DELETE FROM FamilyMembers
+WHERE member_name LIKE '%Quincey'
+
+DELETE FROM Company
+WHERE id IN (
+    SELECT company
+    FROM (
+             SELECT company,
+                    COUNT(*) AS count
+             FROM Trip
+             GROUP BY company
+             HAVING count = (
+                 SELECT COUNT(*) AS c
+                 FROM Trip
+                 GROUP BY company
+                 LIMIT 1
+             )
+         ) AS ids
+)
+
+UPDATE Timepair
+SET
+    start_pair = ADDTIME(start_pair, '00:30:00'),
+    end_pair = ADDTIME(end_pair, '00:30:00')
+
+INSERT INTO Reviews(id ,reservation_id ,rating )
+VALUES (
+        (SELECT COUNT(*) +1
+            From (Select * From Reviews) as sometable),
+        ( SELECT id
+          FROM Reservations as rtable
+          WHERE user_id =(
+              SELECT id
+              FROM Users
+              WHERE name = "George Clooney"
+          )
+            AND room_id =(
+              SELECT id
+              FROM Rooms as rooms
+              WHERE address = "11218, Friel Place, New York"
+          ) ),
+        5);
+
+INSERT INTO Reviews
+SELECT COUNT(*) + 1,
+       (
+           SELECT id
+           FROM Reservations
+           WHERE user_id =(
+               SELECT id
+               FROM Users
+               WHERE name = "George Clooney"
+           )
+             AND room_id =(
+               SELECT id
+               FROM Rooms
+               WHERE address = "11218, Friel Place, New York"
+           )
+       ),
+       5
+FROM Reviews
+
+SELECT teacher
+FROM (
+         SELECT DISTINCT teacher,
+                         class
+         FROM schedule
+                  JOIN teacher ON teacher.id = teacher
+         WHERE class IN (
+             SELECT id
+             FROM Сlass
+             WHERE name LIKE '11%'
+         )
+     ) AS t1
+GROUP BY teacher
+-- и из этой выборки выбираем всех которые повторяются = равное кол-ву классов с "11"
+-- то есть HAVING COUNT(*) = 2
+HAVING COUNT(*) = (
+    SELECT COUNT(id)
+    FROM class
+    WHERE name LIKE '11%'
+)
+/*
+ Выведите идентификаторы преподавателей,
+ которые хотя бы один раз за всё время
+ преподавали в каждом из одиннадцатых классов.
+ */
