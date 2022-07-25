@@ -12,12 +12,11 @@ public class SumOfSquares2 {
         System.out.println(n);
         if (n == 0) return 0;
         if (n == 1) return 1;
-        List<Integer> countsSqrt = new ArrayList<>();
         double d = Math.sqrt(n);
         int maxSqrr = (int) d;
-        int minSums = n; // ну меньше точно не будет же
+        int minSums = n; // ну меньше же точно не будет.
 //        System.out.println(maxSqrr);
-        // ставим ограничением maxSqrr максимальный корень
+        // ставим ограничение maxSqrr максимальный корень
         for (int i = 1; i <= maxSqrr; i++) {
             // и далее с начиная с 1 и до максимального корня
             // рассматриваем все варианты
@@ -30,10 +29,12 @@ public class SumOfSquares2 {
 
             while (newSqrtForItterator != n) {
                 int sqrt = (int) Math.sqrt(firstDiff); //4
-                newSqrtForItterator += sqrt * sqrt; //4 + 16
-                firstDiff = n - newSqrtForItterator; // 20 -20 = 0
+
+                int sum = newSqrtForItterator + sqrt * sqrt; //4 + 16
+                firstDiff = n - sum; // 20 -20 = 0
                 count++;
             }
+
             // и выставляем минимальную
             if (minSums > count) minSums = count;
 
