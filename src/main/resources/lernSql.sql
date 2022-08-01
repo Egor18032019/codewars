@@ -382,3 +382,70 @@ HAVING COUNT(*) = (
  которые хотя бы один раз за всё время
  преподавали в каждом из одиннадцатых классов.
  */
+-- ____
+SELECT Rooms.*
+From Rooms
+         JOIN Reservations
+              on Reservations.room_id =Rooms.id
+WHERE start_date >= '2020-01-01' + INTERVAL 11 WEEK
+  and start_date < '2020-01-01' + INTERVAL 12 WEEK
+
+/*
+ Вывести в порядке убывания популярности доменные имена 2-го уровня,
+ используемые пользователями для электронной почты.
+ Полученный результат необходимо дополнительно отсортировать по возрастанию названий доменных имён.
+ */
+--     SUBSTRING(выражение, начальная позиция, длина)
+--    LENGTH(email) можно опустить
+SELECT SUBSTRING(email    , LOCATE('@', email) + 1) as domain,
+
+       COUNT(*) as count
+FROM Users
+GROUP BY domain
+ORDER BY count DESC,
+         domain ASC
+
+SELECT CONCAT(last_name ," " ,first_name," " ,middle_name  ) as name
+FROM Student
+GROUP by name
+ORDER BY name ASC
+
+SELECT CONCAT(
+               last_name,
+               ".",
+               SUBSTRING(first_name, 1, 1),
+               ".",
+               SUBSTRING(middle_name, 1, 1),
+               "."
+           ) as name
+FROM Student
+ORDER BY name
+
+SELECT YEAR(start_date) AS year,
+       MONTH(start_date) AS month,
+       count(*) AS amount
+FROM Reservations
+GROUP BY month,
+         year
+ORDER BY year,
+         month
+SELECT room_id,
+       FLOOR(AVG(rating)) AS rating
+FROM Reservations
+         INNER JOIN Reviews ON Reservations.id = Reviews.reservation_id
+GROUP BY Reservations.room_id
+
+SELECT home_type,
+       address,
+--        общее количество дней мы найдем разделив полную стоимость на прайс
+       COALESCE(SUM(total / Reservations.price), 0) AS days,
+       COALESCE(SUM(total), 0) AS total_fee
+FROM Rooms
+          Left JOIN Reservations ON Rooms.id = Reservations.room_id
+-- Left join так как нам нужны и null значения
+WHERE has_tv
+  AND has_internet
+  AND has_kitchen
+  AND has_air_con
+GROUP BY 1,
+         2

@@ -382,3 +382,41 @@ HAVING COUNT(*) = (
  которые хотя бы один раз за всё время
  преподавали в каждом из одиннадцатых классов.
  */
+-- ____
+SELECT Rooms.*
+From Rooms
+         JOIN Reservations
+              on Reservations.room_id =Rooms.id
+WHERE start_date >= '2020-01-01' + INTERVAL 11 WEEK
+  and start_date < '2020-01-01' + INTERVAL 12 WEEK
+
+/*
+ Вывести в порядке убывания популярности доменные имена 2-го уровня,
+ используемые пользователями для электронной почты.
+ Полученный результат необходимо дополнительно отсортировать по возрастанию названий доменных имён.
+ */
+--     SUBSTRING(выражение, начальная позиция, длина)
+--    LENGTH(email) можно опустить
+SELECT SUBSTRING(email    , LOCATE('@', email) + 1) as domain,
+
+       COUNT(*) as count
+FROM Users
+GROUP BY domain
+ORDER BY count DESC,
+         domain ASC
+
+SELECT CONCAT(last_name ," " ,first_name," " ,middle_name  ) as name
+FROM Student
+GROUP by name
+ORDER BY name ASC
+
+SELECT CONCAT(
+               last_name,
+               ".",
+               SUBSTRING(first_name, 1, 1),
+               ".",
+               SUBSTRING(middle_name, 1, 1),
+               "."
+           ) as name
+FROM Student
+ORDER BY name
