@@ -16,7 +16,7 @@ public class BalancedParens {
             answer.add("");
             return answer;
         }
-        if (n == 1) {`
+        if (n == 1) {
             answer.add("()");
             return answer;
         }

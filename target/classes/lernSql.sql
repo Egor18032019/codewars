@@ -420,3 +420,32 @@ SELECT CONCAT(
            ) as name
 FROM Student
 ORDER BY name
+
+SELECT YEAR(start_date) AS year,
+       MONTH(start_date) AS month,
+       count(*) AS amount
+FROM Reservations
+GROUP BY month,
+         year
+ORDER BY year,
+         month
+SELECT room_id,
+       FLOOR(AVG(rating)) AS rating
+FROM Reservations
+         INNER JOIN Reviews ON Reservations.id = Reviews.reservation_id
+GROUP BY Reservations.room_id
+
+SELECT home_type,
+       address,
+--        общее количество дней мы найдем разделив полную стоимость на прайс
+       COALESCE(SUM(total / Reservations.price), 0) AS days,
+       COALESCE(SUM(total), 0) AS total_fee
+FROM Rooms
+          Left JOIN Reservations ON Rooms.id = Reservations.room_id
+-- Left join так как нам нужны и null значения
+WHERE has_tv
+  AND has_internet
+  AND has_kitchen
+  AND has_air_con
+GROUP BY 1,
+         2
