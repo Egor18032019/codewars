@@ -18,7 +18,7 @@ public class Tin6 {
     }
 
     private static void run() throws IOException {
-        final int lifts = Integer.parseInt(reader.readLine());
+        final int lifts = Integer.parseInt(reader.readLine().trim());
         Map<Integer, Integer> left = new HashMap<Integer, Integer>();
         Map<Integer, Integer> right = new HashMap<Integer, Integer>();
         for (int i = 0; i < lifts; i++) {
@@ -46,12 +46,73 @@ public class Tin6 {
             int leftForTree = sortLeft.get(mainKey);
             int rightForTree = right.get(mainKey);
             tree.insert(leftForTree, rightForTree);
-            System.out.println(entry.getKey() + " : " + entry.getValue());
         }
         System.out.println(tree.giveMaxLvl());
     }
 
+    public static class Tree {
 
+        Node root;
+        Set<Integer> valueLevel = new HashSet<>();
+
+        public void insert(int left, int right) {
+            if (root == null) {
+                root = new Node(left, right, 1);
+                valueLevel.add(1);
+            } else {
+                if (left == root.right) {
+                    int lvl = root.level + 1;
+                    valueLevel.add(lvl);
+                    root.child.add(new Node(left, right, lvl));
+                } else {
+                    // запустили рекурсию которая копает в глубь
+                    saveChild(root.child, left, right);
+                }
+
+            }
+        }
+
+
+        public void saveChild(List<Node> child, int left, int right) {
+            for (Node nextnode : child) {
+                if (nextnode.right == left) {
+                    int lvl = nextnode.level + 1;
+                    nextnode.level = lvl;
+                    nextnode.child.add(new Node(left, right, lvl + 1));
+                    valueLevel.add(lvl + 1);
+                } else {
+                    saveChild(nextnode.child, left, right);
+                }
+            }
+        }
+
+        public int giveMaxLvl() {
+            int max = Collections.max(valueLevel);
+            return max;
+        }
+
+        public class Node {
+
+            int left;
+            int right;
+            int level;
+            List<Node> child;
+
+            Node(int left, int right, int level) {
+                this.left = left;
+                this.right = right;
+                this.level = level;
+                child = new ArrayList<>();
+            }
+
+            /**
+             * Метод который выводит на экран содержимое узла
+             */
+            public void printNode() {
+                System.out.println("left " + left + " right: " + right + "size " + child.size());
+            }
+        }
+    }
 }
 /*
 начинаем с 0 же ???
