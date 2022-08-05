@@ -29,21 +29,19 @@ public class TIn4 {
 //            System.out.println("Error !!");
 //        }
         int countBrace = 0;
-        boolean miniBraceOpen = false;
         boolean isInit = true;
-        while (true) {
-            String line = reader.readLine().trim();
+        String line;
+        while ((line = reader.readLine().trim()).length() > 0) {
+            System.out.println(line.length());
             if (line.equals("{")) {
                 countBrace++;
-                miniBraceOpen = true;
             }
             if (line.equals("}")) {
                 countBrace--;
-                miniBraceOpen = false;
                 if (countBrace == 0) {
                     //  после конца блока возвращается старое значение переменной
                     change = original;
-                    System.out.println("the end ");
+//                    System.out.println("the end ");
                 }
             }
             if (line.length() > 1) {
@@ -65,8 +63,8 @@ public class TIn4 {
                             original.put(key, val);
                             change.put(key, val);
 
+                            System.out.println(val);
                         }
-                        System.out.println(val);
                     }
 
                 } else {
@@ -85,7 +83,7 @@ public class TIn4 {
             }
 
         }
-
+        reader.close();
     }
 
 
@@ -97,20 +95,3 @@ public class TIn4 {
         return true;
     }
 }
-/*
-thats=zero
-a=10
-ten=a
-aboba=ten
-ten=-10
-{
-b=a
-a=1337
-c=a
-}
-{
-d=a
-e=aboba
-}
-lol=a
- */

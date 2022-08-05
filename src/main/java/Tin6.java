@@ -21,15 +21,18 @@ public class Tin6 {
         final int lifts = Integer.parseInt(reader.readLine().trim());
         Map<Integer, Integer> left = new HashMap<Integer, Integer>();
         Map<Integer, Integer> right = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         for (int i = 0; i < lifts; i++) {
             String[] line = reader.readLine().split(" ");
+
+            map.put(i, Integer.valueOf(line[0] + line[1]));
             left.put(i, Integer.valueOf(line[0]));
             right.put(i, Integer.valueOf(line[1]));
         }
         reader.close();
 //        отсортируем мапы по ключу и значению
 
-        Map<Integer, Integer> sortLeft = left.entrySet()
+        Map<Integer, Integer> sortMap = map.entrySet()
                 .parallelStream()
                 .sorted(Map.Entry.<Integer, Integer>comparingByValue())
                 .collect(Collectors.toMap(
@@ -38,12 +41,12 @@ public class Tin6 {
                         (a, b) -> a,
                         LinkedHashMap::new
                 ));
-        int fistKey = (int) sortLeft.keySet().toArray()[0];
+        int fistKey = (int) sortMap.keySet().toArray()[0];
         System.out.println("fistKey " + fistKey);
         Tree tree = new Tree();
-        for (Map.Entry<Integer, Integer> entry : sortLeft.entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : sortMap.entrySet()) {
             int mainKey = entry.getKey();
-            int leftForTree = sortLeft.get(mainKey);
+            int leftForTree = left.get(mainKey);
             int rightForTree = right.get(mainKey);
             tree.insert(leftForTree, rightForTree);
         }
@@ -56,32 +59,35 @@ public class Tin6 {
         Set<Integer> valueLevel = new HashSet<>();
 
         public void insert(int left, int right) {
+            System.out.println(left + " " + right);
             if (root == null) {
                 root = new Node(left, right, 1);
                 valueLevel.add(1);
             } else {
-                if (left == root.right) {
-                    int lvl = root.level + 1;
-                    valueLevel.add(lvl);
-                    root.child.add(new Node(left, right, lvl));
-                } else {
-                    // запустили рекурсию которая копает в глубь
-                    saveChild(root.child, left, right);
-                }
-
+                saveChild(root, left, right);
             }
         }
 
 
-        public void saveChild(List<Node> child, int left, int right) {
-            for (Node nextnode : child) {
-                if (nextnode.right == left) {
-                    int lvl = nextnode.level + 1;
-                    nextnode.level = lvl;
-                    nextnode.child.add(new Node(left, right, lvl + 1));
-                    valueLevel.add(lvl + 1);
-                } else {
-                    saveChild(nextnode.child, left, right);
+        public void saveChild(Node node, int left, int right) {
+
+            if (node.right == left) {
+                if (node.child.size() > 0) {
+                    // если у этой ноды есть дети то надо и по ним пройтись
+                    for (Node nextNode : node.child) {
+                        System.out.println("???");
+                        saveChild(nextNode, left, right);
+                    }
+                }
+                int lvl = node.level + 1;
+
+                node.child.add(new Node(left, right, lvl));
+                valueLevel.add(lvl);
+
+            } else {
+                for (Node nextNode : node.child) {
+
+                    saveChild(nextNode, left, right);
                 }
             }
         }
@@ -131,4 +137,13 @@ public class Tin6 {
 2 2
 2 2
 0 2
+
+-----
+
+-----
+3
+2 2
+2 2
+0 2
+   вывод 3
  */
