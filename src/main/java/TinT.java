@@ -57,7 +57,12 @@ public class TinT {
         }
         int sumOdd1 = giveSum(oddArr);
         int sumEven1 = giveSum(evenArr);
+        if(sumOdd1>sumEven1){
+        System.out.println(sumOdd1 - sumEven1);
+        } else {
         System.out.println(sumEven1 - sumOdd1);
+
+        }
     }
 
     public static int giveSum(int[] arr) {

@@ -28,7 +28,7 @@ public class Tin7 {
             String point = magazine.substring(begin, end);
             String[] sortLine = point.split("");
             String[] realLine = point.split("");
-            System.out.println(Arrays.toString(sortLine));
+//            System.out.println(Arrays.toString(sortLine));
             Arrays.sort(sortLine);
             int prevPlace = 0;
             int step = 0;

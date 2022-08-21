@@ -18,6 +18,7 @@ public class TIn4 {
         reader = new BufferedReader(new InputStreamReader(System.in));
     }
 
+
     private static void close() throws IOException {
         reader.close();
     }
@@ -25,14 +26,27 @@ public class TIn4 {
     private static void run() throws IOException {
         Map<String, String> original = new HashMap<String, String>();
         Map<String, String> change = new HashMap<String, String>();
-//        if (!reader.readLine().equals("{")) {
-//            System.out.println("Error !!");
-//        }
+
         int countBrace = 0;
         boolean isInit = true;
-        String line;
-        while ((line = reader.readLine().trim()).length() > 0) {
-            System.out.println(line.length());
+        while (true) {
+            String line = reader.readLine();
+            if (line.isEmpty()) {
+                break;
+            }
+            if (line.equals("")) {
+                break;
+            }
+            if (line.equals(" ")) {
+                break;
+            }
+            if (line.length() == 0) {
+                break;
+            }
+            if (line == null) {
+                break;
+            }
+
             if (line.equals("{")) {
                 countBrace++;
             }
@@ -81,8 +95,24 @@ public class TIn4 {
                     }
                 }
             }
-
+//сдулся ))
+            if (line.isEmpty()) {
+                break;
+            }
+            if (line.equals("")) {
+                break;
+            }
+            if (line.equals(" ")) {
+                break;
+            }
+            if (line.length() == 0) {
+                break;
+            }
+            if (line == null) {
+                break;
+            }
         }
+
         reader.close();
     }
 

@@ -42,8 +42,7 @@ public class Tin6 {
                         LinkedHashMap::new
                 ));
         int fistKey = (int) sortMap.keySet().toArray()[0];
-        System.out.println("fistKey " + fistKey);
-        Tree tree = new Tree();
+         Tree tree = new Tree();
         for (Map.Entry<Integer, Integer> entry : sortMap.entrySet()) {
             int mainKey = entry.getKey();
             int leftForTree = left.get(mainKey);
@@ -59,8 +58,7 @@ public class Tin6 {
         Set<Integer> valueLevel = new HashSet<>();
 
         public void insert(int left, int right) {
-            System.out.println(left + " " + right);
-            if (root == null) {
+             if (root == null) {
                 root = new Node(left, right, 1);
                 valueLevel.add(1);
             } else {
@@ -75,8 +73,7 @@ public class Tin6 {
                 if (node.child.size() > 0) {
                     // если у этой ноды есть дети то надо и по ним пройтись
                     for (Node nextNode : node.child) {
-                        System.out.println("???");
-                        saveChild(nextNode, left, right);
+                         saveChild(nextNode, left, right);
                     }
                 }
                 int lvl = node.level + 1;
@@ -111,12 +108,7 @@ public class Tin6 {
                 child = new ArrayList<>();
             }
 
-            /**
-             * Метод который выводит на экран содержимое узла
-             */
-            public void printNode() {
-                System.out.println("left " + left + " right: " + right + "size " + child.size());
-            }
+
         }
     }
 }
