@@ -40,8 +40,7 @@ public class MyLinkedList {
             head = tail = new Node(val, null);
             // голова и хвост один узел а указателя на следующй узел у них нет
         } else {
-            Node newNode = new Node(val, head);
-            head = newNode;
+            head = new Node(val, head);
         }
         maxIndex++;
     }
@@ -83,8 +82,7 @@ public class MyLinkedList {
                 nodeForIndex = nodeForIndex.next; //1
             }
             // 1 -> 2
-            Node newNode = new Node(val, nodeForIndex.next);
-            nodeForIndex.next = newNode;
+            nodeForIndex.next = new Node(val, nodeForIndex.next);
             maxIndex++;
         }
     }
@@ -114,8 +112,7 @@ public class MyLinkedList {
                 beforIndex.next = null;
                 tail = beforIndex;
             } else {
-                Node nextNodeAfterDeleting = beforIndex.next.next;
-                beforIndex.next = nextNodeAfterDeleting;
+                beforIndex.next = beforIndex.next.next;
             }
         }
         maxIndex--;
