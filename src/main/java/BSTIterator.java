@@ -6,7 +6,7 @@ public class BSTIterator {
     Количество узлов в дереве находится в диапазоне [1, 10*5].
     0 = Node.val = 106
     Будет сделано не более 105 вызовов hasNext и next.
-    то есть Я ожидаю что элементов в массиве не может быть больше 10 в 5 степене ??
+    то есть Я ожидаю что элементов в массиве не может быть больше 10 в 5 степени ??
      */
     int[] arr = new int[100000];
 
@@ -17,7 +17,7 @@ public class BSTIterator {
     public void addOrderTreeInArrays(TreeNode root) {
         if (root == null) return;
         addOrderTreeInArrays(root.left); // с начало бежим по левой части
-        arr[positionForAdd++] = root.val;  // когда пробежаи по левой части то добаляем корень и бежим по правой
+        arr[positionForAdd++] = root.val;  // когда пробежали по левой части то добаляем корень и бежим по правой
         addOrderTreeInArrays(root.right); // когда пробежали по левой части бежим по правой
         // то есть в итоге мы получаем отсортированный массив значений с дерева
     }
@@ -31,24 +31,24 @@ public class BSTIterator {
         return positionForIterator < positionForAdd;
     }
 
-//    public class TreeNode {
-//        int val;
-//        TreeNode left;
-//        TreeNode right;
-//
-//        TreeNode() {
-//        }
-//
-//        TreeNode(int val) {
-//            this.val = val;
-//        }
-//
-//        TreeNode(int val, TreeNode left, TreeNode right) {
-//            this.val = val;
-//            this.left = left;
-//            this.right = right;
-//        }
-//    }
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
 }
 
 /*
